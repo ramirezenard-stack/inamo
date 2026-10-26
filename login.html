@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="valqora.css">
+    <title>VALQORA | Register & Login</title>
+</head>
+
+<body>
+
+<section id="header">
+    <img src="img/logo.png" alt="VALQORA">
+    <div class="searchbar">
+        <input type="text" placeholder="Search products...">
+        <button class="bttn" type="button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+</section>
+
+<button class="menu-toggle" id="menu-toggle">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<section id="h-menus">
+    <ul>
+        <li>
+            <i class="fa-solid fa-house"></i>
+            <a href="home.html">Home</a>
+        </li>
+        <li>
+            <i class="fa-solid fa-shop"></i>
+            <a href="shop.html">Shop</a>
+        </li>
+        <li>
+            <i class="fa-solid fa-layer-group"></i>
+            <a href="collections.html">Collections</a>
+        </li>
+        <li>
+            <i class="fa-solid fa-circle-info"></i>
+            <a href="about.html">About</a>
+        </li>
+        <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="contacts.html">Contact</a>
+        </li>
+    </ul>
+</section>
+
+<!-- SIGN UP -->
+
+<div class="register" id="signup">
+
+    <h1 class="for-title">SIGN UP</h1>
+
+    <form method="POST" action="register.php" id="signup-form">
+
+        <div class="input-group">
+            <input
+                type="text"
+                name="fname"
+                id="firstname"
+                placeholder="First Name"
+                required>
+            <label for="firstname">First Name</label>
+        </div>
+
+        <div class="input-group">
+            <input
+                type="text"
+                name="lname"
+                id="lastname"
+                placeholder="Last Name"
+                required>
+            <label for="lastname">Last Name</label>
+        </div>
+
+        <div class="input-group">
+            <input
+                type="email"
+                name="email"
+                id="signup-email"
+                placeholder="Email Address"
+                required>
+            <label for="signup-email">Email</label>
+        </div>
+
+        <div class="input-group">
+            <input
+                type="tel"
+                name="phone"
+                id="phone"
+                placeholder="Phone Number"
+                required>
+            <label for="phone">Phone</label>
+        </div>
+
+        <div class="input-group">
+            <input
+                type="password"
+                name="password"
+                id="signup-password"
+                placeholder="Password"
+                minlength="6"
+                required>
+            <label for="signup-password">Password</label>
+        </div><br>
+
+        <button type="submit" class="l-bttn">
+            SIGN UP
+        </button>
+
+        <h5 class="other-way">or</h5>
+
+        <hr>
+
+        <div class="icons">
+            <i class="fa-brands fa-google"></i>
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+        </div>
+
+        <div class="links">
+            <h5>Already have an account?</h5>
+
+            <button
+                type="button"
+                class="switch-login"
+                id="show-login">
+                SIGN IN
+            </button>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- SIGN IN -->
+
+<div class="register" id="signin">
+
+    <h1 class="for-title">SIGN IN</h1>
+
+    <form method="POST" action="login.php" id="login-form">
+
+        <div class="input-group">
+            <input
+                type="email"
+                name="email"
+                id="login-email"
+                placeholder="Email Address"
+                required>
+
+            <label for="login-email">
+                Email
+            </label>
+        </div>
+
+        <div class="input-group">
+            <input
+                type="password"
+                name="password"
+                id="login-password"
+                placeholder="Password"
+                required>
+
+            <label for="login-password">
+                Password
+            </label>
+        </div>
+
+        <div class="links">
+            <a href="recover.html">
+                Recover Password
+            </a>
+        </div>
+
+        <br>
+
+        <button
+            type="submit"
+            class="s-bttn"
+            id="s-bttn">
+            SIGN IN
+        </button>
+
+        <div class="links">
+            <h5>Don't have an account?</h5>
+
+            <button
+                type="button"
+                class="switch-signup"
+                id="show-signup">
+                SIGN UP
+            </button>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- FOOTER -->
+
+<section id="footer">
+
+    <div class="footer-info">
+
+        <div class="mark-f">
+            <h4>VELQORA</h4>
+            <h6>
+                Wear your identity<br>
+                Modern style made<br>
+                for you.
+            </h6>
+        </div>
+
+        <div class="shop-f">
+            <h6>SHOP</h6>
+
+            <a href="shop.html" class="href">
+                New Arrivals
+            </a><br>
+
+            <a href="collections.html" class="href">
+                Collections
+            </a><br>
+
+            <a href="shop.html" class="href">
+                Best Sellers
+            </a><br>
+
+            <a href="shop.html" class="href">
+                Sale
+            </a>
+        </div>
+
+        <div class="support-f">
+            <h6>SUPPORT</h6>
+
+            <a href="contacts.html" class="href">
+                Contact Us
+            </a><br>
+
+            <a href="faq.html" class="href">
+                FAQs
+            </a><br>
+
+            <a href="shipping.html" class="href">
+                Shipping
+            </a><br>
+
+            <a href="returns.html" class="href">
+                Returns
+            </a>
+        </div>
+
+        <div class="support-f">
+            <h6>FOLLOW US</h6>
+
+            <a href="#" class="href">
+                Instagram
+            </a><br>
+
+            <a href="#" class="href">
+                Facebook
+            </a><br>
+
+            <a href="#" class="href">
+                TikTok
+            </a>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="rights-f">
+
+        <h6>
+            © 2026 VELQORA. All Rights Reserved.
+        </h6>
+
+        <a href="#">
+            Privacy
+        </a>
+
+        <a href="#">
+            | Terms
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- INLINE JAVASCRIPT -->
+
+<script>
+
+const signup = document.getElementById("signup");
+const signin = document.getElementById("signin");
+const showLogin = document.getElementById("show-login");
+const showSignup = document.getElementById("show-signup");
+const menuToggle = document.getElementById("menu-toggle");
+const menus = document.getElementById("h-menus");
+
+signin.style.display = "none";
+
+showLogin.addEventListener("click", function() {
+    signup.style.display = "none";
+    signin.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+
+showSignup.addEventListener("click", function() {
+    signin.style.display = "none";
+    signup.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+
+menuToggle.addEventListener("click", function() {
+    menus.classList.toggle("active");
+});
+
+const signupForm = document.getElementById("signup-form");
+
+signupForm.addEventListener("submit", function(event) {
+
+    const password =
+        document.getElementById("signup-password").value;
+
+    if (password.length < 6) {
+        event.preventDefault();
+        alert("Password must be at least 6 characters.");
+    }
+
+});
+
+const loginForm = document.getElementById("login-form");
+
+loginForm.addEventListener("submit", function(event) {
+
+    const email =
+        document.getElementById("login-email").value.trim();
+
+    const password =
+        document.getElementById("login-password").value;
+
+    if (email === "" || password === "") {
+        event.preventDefault();
+        alert("Please enter your email and password.");
+    }
+
+});
+
+</script>
+
+</body>
+</html>

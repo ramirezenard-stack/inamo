@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>VALQORA | Order Confirmed</title>
+
+    <link rel="stylesheet" href="valqora.css">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<section id="order-success">
+
+    <div class="success-box">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <h1>ORDER CONFIRMED!</h1>
+
+        <p>
+            Thank you for shopping with VALQORA.
+        </p>
+
+
+        <h3>
+            Order Number:
+        </h3>
+
+        <strong id="order-number">
+            VAL-000000
+        </strong>
+
+
+        <div class="success-buttons">
+
+            <a href="shop.html">
+                CONTINUE SHOPPING
+            </a>
+
+            <a href="home.html">
+                BACK TO HOME
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+const order =
+    JSON.parse(
+        localStorage.getItem(
+            "valqoraLastOrder"
+        )
+    );
+
+
+if (order) {
+
+    document.getElementById(
+        "order-number"
+    ).textContent =
+        order.orderNumber;
+
+}
+
+</script>
+
+
+</body>
+
+</html>

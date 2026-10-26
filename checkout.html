@@ -1,0 +1,295 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VALQORA | Checkout</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="valqora.css">
+</head>
+<body>
+
+<section id="header">
+    <img src="img/logo.png" alt="VALQORA Logo">
+</section>
+
+<section id="checkout">
+    <h1>CHECKOUT</h1>
+
+    <div class="checkout-container">
+
+        <form class="checkout-info" id="checkout-form">
+            <h2>Shipping Information</h2>
+
+            <div class="form-row">
+                <div>
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" placeholder="First Name" required>
+                </div>
+                <div>
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" placeholder="Last Name" required>
+                </div>
+            </div>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email Address" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" placeholder="Phone Number" required>
+
+            <label for="address">Address</label>
+            <input type="text" id="address" placeholder="House No. / Street" required>
+
+            <div class="form-row">
+                <div>
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="City" required>
+                </div>
+                <div>
+                    <label for="postal">Postal Code</label>
+                    <input type="text" id="postal" placeholder="Postal Code" required>
+                </div>
+            </div>
+
+            <h2>Payment Method</h2>
+
+            <div class="payment-method">
+                <label><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
+                <label><input type="radio" name="payment" value="gcash"> GCash</label>
+                <label><input type="radio" name="payment" value="card"> Credit / Debit Card</label>
+            </div>
+
+            <button type="submit" id="place-order">PLACE ORDER</button>
+        </form>
+
+        <div class="order-summary">
+            <h2>Your Order</h2>
+            <div id="checkout-product"></div>
+            <hr>
+
+            <div class="checkout-row">
+                <span>Subtotal</span>
+                <span id="checkout-subtotal">₱0.00</span>
+            </div>
+
+            <div class="checkout-row">
+                <span>Shipping</span>
+                <span id="checkout-shipping">₱100.00</span>
+            </div>
+
+            <hr>
+
+            <div class="checkout-total">
+                <span>Total</span>
+                <span id="checkout-total">₱0.00</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+const checkoutForm=document.getElementById("checkout-form");
+const checkoutProduct=document.getElementById("checkout-product");
+const checkoutSubtotal=document.getElementById("checkout-subtotal");
+const checkoutShipping=document.getElementById("checkout-shipping");
+const checkoutTotal=document.getElementById("checkout-total");
+
+let checkoutItems=[];
+const cart=JSON.parse(localStorage.getItem("valqoraCart"))||[];
+const buyNow=JSON.parse(localStorage.getItem("valqoraBuyNow"));
+
+if(buyNow){
+    checkoutItems=[buyNow];
+}else{
+    checkoutItems=cart;
+}
+
+function formatPeso(price){
+    return "₱"+Number(price).toLocaleString("en-PH",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+}
+
+function displayCheckoutProducts(){
+    if(!checkoutProduct)return;
+
+    checkoutProduct.innerHTML="";
+
+    if(checkoutItems.length===0){
+        checkoutProduct.innerHTML=`
+            <div class="empty-checkout">
+                <h3>Your order is empty.</h3>
+                <p>Please add a product to your cart.</p>
+            </div>
+        `;
+        updateCheckoutTotal();
+        return;
+    }
+
+    checkoutItems.forEach(function(product){
+        const price=Number(product.price)||0;
+        let quantity=Number(product.quantity)||1;
+
+        if(quantity<1)quantity=1;
+        if(quantity>15)quantity=15;
+
+        const productTotal=price*quantity;
+        const image=product.image||"";
+        const name=product.name||"Product";
+        const size=product.size||"N/A";
+        const description=product.description||"";
+
+        const productDiv=document.createElement("div");
+        productDiv.className="checkout-product";
+
+        productDiv.innerHTML=`
+            <div class="checkout-product-image">
+                <img src="${image}" alt="${name}">
+            </div>
+            <div class="checkout-product-info">
+                <h3>${name}</h3>
+                <p>Price: ${formatPeso(price)}</p>
+                <p>Size: ${size}</p>
+                <p>Quantity: ${quantity}</p>
+                ${description?`<p>${description}</p>`:""}
+                <p><strong>Product Total:</strong> ${formatPeso(productTotal)}</p>
+            </div>
+        `;
+
+        checkoutProduct.appendChild(productDiv);
+    });
+
+    updateCheckoutTotal();
+}
+
+function updateCheckoutTotal(){
+    let subtotal=0;
+
+    checkoutItems.forEach(function(product){
+        const price=Number(product.price)||0;
+        let quantity=Number(product.quantity)||1;
+
+        if(quantity<1)quantity=1;
+        if(quantity>15)quantity=15;
+
+        subtotal+=price*quantity;
+    });
+
+    let shipping=100;
+
+    if(checkoutItems.length===0){
+        shipping=0;
+    }
+
+    const total=subtotal+shipping;
+
+    if(checkoutSubtotal){
+        checkoutSubtotal.textContent=formatPeso(subtotal);
+    }
+
+    if(checkoutShipping){
+        checkoutShipping.textContent=formatPeso(shipping);
+    }
+
+    if(checkoutTotal){
+        checkoutTotal.textContent=formatPeso(total);
+    }
+}
+
+checkoutForm.addEventListener("submit",function(event){
+    event.preventDefault();
+
+    const firstname=document.getElementById("firstname").value.trim();
+    const lastname=document.getElementById("lastname").value.trim();
+    const email=document.getElementById("email").value.trim();
+    const phone=document.getElementById("phone").value.trim();
+    const address=document.getElementById("address").value.trim();
+    const city=document.getElementById("city").value.trim();
+    const postal=document.getElementById("postal").value.trim();
+
+    const paymentInput=document.querySelector('input[name="payment"]:checked');
+
+    if(!paymentInput){
+        alert("Please select a payment method.");
+        return;
+    }
+
+    const payment=paymentInput.value;
+
+    if(checkoutItems.length===0){
+        alert("Your order is empty.");
+        return;
+    }
+
+    const order={
+        customer:{
+            firstname:firstname,
+            lastname:lastname,
+            email:email,
+            phone:phone,
+            address:address,
+            city:city,
+            postal:postal
+        },
+        payment:payment,
+        products:checkoutItems
+    };
+
+    console.log("ORDER BEING SENT:",order);
+
+    fetch("save_order.php",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(order)
+    })
+    .then(async function(response){
+        const text=await response.text();
+        console.log("SERVER RESPONSE:",text);
+
+        try{
+            return JSON.parse(text);
+        }catch(error){
+            throw new Error("Server returned invalid response: "+text);
+        }
+    })
+    .then(function(data){
+        console.log("PHP DATA:",data);
+
+        if(data.success){
+            alert("Order placed successfully!\n\nOrder #"+data.order_id);
+
+            localStorage.removeItem("valqoraCart");
+            localStorage.removeItem("valqoraBuyNow");
+
+            window.location.href="home.html";
+        }else{
+            alert(
+                "Order failed:\n\n"+
+                data.message+
+                "\n\nError:\n"+
+                (data.error||"No additional error.")
+            );
+        }
+    })
+    .catch(function(error){
+        console.error("FETCH ERROR:",error);
+
+        alert(
+            "Something went wrong.\n\n"+
+            error.message
+        );
+    });
+});
+
+displayCheckoutProducts();
+</script>
+
+</body>
+</html>
+```

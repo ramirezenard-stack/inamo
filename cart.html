@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="valqora.css">
+
+    <title>VALQORA | Cart</title>
+</head>
+
+<body>
+
+<section id="header">
+    <img src="img/logo.png" alt="VALQORA">
+
+    <div class="searchbar">
+        <input type="text" placeholder="Search products...">
+        <button class="bttn" type="button">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+</section>
+
+<button class="menu-toggle" id="menu-toggle">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<section id="h-menus">
+    <ul>
+        <li>
+            <i class="fa-solid fa-house"></i>
+            <a href="home.html">Home</a>
+        </li>
+
+        <li>
+            <i class="fa-solid fa-shop"></i>
+            <a href="shop.html">Shop</a>
+        </li>
+
+        <li>
+            <i class="fa-solid fa-layer-group"></i>
+            <a href="collections.html">Collections</a>
+        </li>
+
+        <li>
+            <i class="fa-solid fa-circle-info"></i>
+            <a href="about.html">About</a>
+        </li>
+
+        <li>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="contacts.html">Contact</a>
+        </li>
+
+        <li>
+            <i class="fa-solid fa-cart-shopping"></i>
+            <a href="cart.html">Cart</a>
+            <span id="cart-count">0</span>
+        </li>
+    </ul>
+</section>
+
+
+<!-- CART -->
+
+<section id="cart">
+
+    <h1>YOUR CART</h1>
+
+    <div class="cart-container" id="cart-container">
+        <!-- JavaScript will display products here -->
+    </div>
+
+    <div class="cart-summary">
+
+        <div class="cart-row">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">₱0.00</span>
+        </div>
+
+        <div class="cart-row">
+            <span>Shipping</span>
+            <span>₱100.00</span>
+        </div>
+
+        <hr>
+
+        <div class="cart-row cart-total">
+            <strong>Total</strong>
+            <strong id="cart-total">₱100.00</strong>
+        </div>
+
+        <button id="cart-checkout">
+            PROCEED TO CHECKOUT
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<section id="footer">
+
+    <div class="footer-info">
+
+        <div class="mark-f">
+            <h4>VELQORA</h4>
+            <h6>
+                Wear your identity<br>
+                Modern style made<br>
+                for you.
+            </h6>
+        </div>
+
+        <div class="shop-f">
+            <h6>SHOP</h6>
+            <a href="shop.html">New Arrivals</a><br>
+            <a href="collections.html">Collections</a><br>
+            <a href="shop.html">Best Sellers</a><br>
+            <a href="shop.html">Sale</a>
+        </div>
+
+        <div class="support-f">
+            <h6>SUPPORT</h6>
+            <a href="contacts.html">Contact Us</a><br>
+            <a href="faq.html">FAQs</a><br>
+            <a href="shipping.html">Shipping</a><br>
+            <a href="returns.html">Returns</a>
+        </div>
+
+        <div class="support-f">
+            <h6>FOLLOW US</h6>
+            <a href="#">Instagram</a><br>
+            <a href="#">Facebook</a><br>
+            <a href="#">TikTok</a>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="rights-f">
+        <h6>© 2026 VELQORA. All Rights Reserved.</h6>
+        <a href="#">Privacy</a>
+        <a href="#">| Terms</a>
+    </div>
+
+</section>
+
+
+<script>
+
+/* =========================
+   CART
+========================= */
+
+let cart = JSON.parse(
+    localStorage.getItem("valqoraCart")
+) || [];
+
+
+/* =========================
+   FORMAT PRICE
+========================= */
+
+function formatPeso(price) {
+    return "₱" + Number(price).toLocaleString(
+        "en-PH",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
+}
+
+
+/* =========================
+   CART COUNT
+========================= */
+
+function updateCartCount() {
+
+    const cartCount =
+        document.getElementById("cart-count");
+
+    if (!cartCount) return;
+
+    let total = 0;
+
+    cart.forEach(function(product) {
+        total += Number(product.quantity) || 0;
+    });
+
+    cartCount.textContent = total;
+}
+
+
+/* =========================
+   DISPLAY CART
+========================= */
+
+function displayCart() {
+
+    const container =
+        document.getElementById("cart-container");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty-cart">
+                <h2>Your cart is empty.</h2>
+                <p>Add products from the shop.</p>
+                <a href="shop.html">
+                    <button>GO TO SHOP</button>
+                </a>
+            </div>
+        `;
+
+        updateCartTotal();
+        return;
+    }
+
+
+    cart.forEach(function(product, index) {
+
+        const quantity =
+            Number(product.quantity) || 1;
+
+        const price =
+            Number(product.price) || 0;
+
+        const productTotal =
+            price * quantity;
+
+
+        const item =
+            document.createElement("div");
+
+        item.className = "cart-item";
+
+
+        item.innerHTML = `
+            <div class="cart-product-image">
+                <img src="${product.image}"
+                     alt="${product.name}">
+            </div>
+
+            <div class="cart-product-info">
+
+                <h3>${product.name}</h3>
+
+                <p>
+                    Price:
+                    ${formatPeso(price)}
+                </p>
+
+                <p>
+                    Size:
+                    ${product.size || "N/A"}
+                </p>
+
+                <div class="cart-quantity">
+
+                    <button
+                        class="cart-minus"
+                        data-index="${index}">
+                        −
+                    </button>
+
+                    <span>
+                        ${quantity}
+                    </span>
+
+                    <button
+                        class="cart-plus"
+                        data-index="${index}">
+                        +
+                    </button>
+
+                </div>
+
+                <p>
+                    Total:
+                    ${formatPeso(productTotal)}
+                </p>
+
+                <button
+                    class="cart-remove"
+                    data-index="${index}">
+                    REMOVE
+                </button>
+
+            </div>
+        `;
+
+        container.appendChild(item);
+
+    });
+
+
+    updateCartTotal();
+    addCartEvents();
+}
+
+
+/* =========================
+   CART BUTTON EVENTS
+========================= */
+
+function addCartEvents() {
+
+    document.querySelectorAll(".cart-plus")
+    .forEach(function(button) {
+
+        button.addEventListener("click", function() {
+
+            const index =
+                Number(button.dataset.index);
+
+            cart[index].quantity++;
+
+            saveCart();
+            displayCart();
+            updateCartCount();
+
+        });
+
+    });
+
+
+    document.querySelectorAll(".cart-minus")
+    .forEach(function(button) {
+
+        button.addEventListener("click", function() {
+
+            const index =
+                Number(button.dataset.index);
+
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+            }
+
+            saveCart();
+            displayCart();
+            updateCartCount();
+
+        });
+
+    });
+
+
+    document.querySelectorAll(".cart-remove")
+    .forEach(function(button) {
+
+        button.addEventListener("click", function() {
+
+            const index =
+                Number(button.dataset.index);
+
+            cart.splice(index, 1);
+
+            saveCart();
+            displayCart();
+            updateCartCount();
+
+        });
+
+    });
+
+}
+
+
+/* =========================
+   SAVE CART
+========================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+        "valqoraCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+/* =========================
+   CART TOTAL
+========================= */
+
+function updateCartTotal() {
+
+    const subtotalElement =
+        document.getElementById("cart-subtotal");
+
+    const totalElement =
+        document.getElementById("cart-total");
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(function(product) {
+
+        subtotal +=
+            Number(product.price) *
+            Number(product.quantity);
+
+    });
+
+
+    const shipping =
+        cart.length > 0 ? 100 : 0;
+
+    const total =
+        subtotal + shipping;
+
+
+    if (subtotalElement) {
+        subtotalElement.textContent =
+            formatPeso(subtotal);
+    }
+
+
+    if (totalElement) {
+        totalElement.textContent =
+            formatPeso(total);
+    }
+
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+const checkoutButton =
+    document.getElementById("cart-checkout");
+
+
+if (checkoutButton) {
+
+    checkoutButton.addEventListener(
+        "click",
+        function() {
+
+            if (cart.length === 0) {
+
+                alert("Your cart is empty.");
+
+                return;
+            }
+
+
+            localStorage.removeItem(
+                "valqoraBuyNow"
+            );
+
+
+            window.location.href =
+                "checkout.html";
+
+        }
+    );
+
+}
+
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const menuToggle =
+    document.getElementById("menu-toggle");
+
+const menus =
+    document.getElementById("h-menus");
+
+
+if (menuToggle && menus) {
+
+    menuToggle.addEventListener(
+        "click",
+        function() {
+
+            menus.classList.toggle("active");
+
+        }
+    );
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+updateCartCount();
+displayCart();
+
+</script>
+
+</body>
+</html>
